@@ -27,6 +27,11 @@ Server::Server()
 void dataHandlerThread(std::string data)
 {
   std::cout << data << std::endl;
+
+  NodeAccessMutex.lock();
+  //execute node code here
+  NodeAccessMutex.unlock();
+
   /*
   char dataCompare[1024] = "testCompare";
   if(strcmp (data,dataCompare) == 0)
