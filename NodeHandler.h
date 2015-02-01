@@ -7,7 +7,8 @@ private:
 
 public:
   NodeHandler();
-
+  void InitRadio();
+  void WriteData(int data);
   ~NodeHandler();
 
 

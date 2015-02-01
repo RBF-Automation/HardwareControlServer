@@ -35,13 +35,6 @@ void dataHandlerThread(std::string data)
   //execute node code here
   NodeAccessMutex.unlock();
 
-  /*
-  char dataCompare[1024] = "testCompare";
-  if(strcmp (data,dataCompare) == 0)
-{
-std::cout << data << std::endl;
-}
-*/
 }
 
 void newServerThread()
@@ -67,10 +60,11 @@ void newServerThread()
           while ( true )
           {
             std::string data;
+            std::string send = "{\"sent\":true}";
 
             new_sock >> data;
+            new_sock << send;
             std::thread t2(dataHandlerThread, data);
-            //new_sock << data;
 
             t2.detach();
           }

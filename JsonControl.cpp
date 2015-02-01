@@ -17,14 +17,6 @@ void JsonControl::DecodeJsonObject(const char*jsonData)
 
   //parse action
 
-  if()
-  {
-
-  }
-  else if()
-  {
-
-  }
 
   std::cout << doc["action"].GetString() << std::endl;
   //s.SetInt(s.GetInt());
