@@ -1,13 +1,13 @@
 #include "Server.h"
 #include "ServerSocket.h"
 #include "SocketException.h"
+#include "JsonControl.h"
 #include <stdint.h>
 #include <cstdio>
 #include <iostream>
 #include <stdlib.h>
 #include <thread>
 #include <mutex>
-
 
 std::mutex NodeAccessMutex;
 
@@ -26,7 +26,10 @@ Server::Server()
 
 void dataHandlerThread(std::string data)
 {
-  std::cout << data << std::endl;
+  const char * c = data.c_str();
+  JsonControl jsn;
+  jsn.DecodeJsonObject(c);
+  //std::cout << data << std::endl;
 
   NodeAccessMutex.lock();
   //execute node code here

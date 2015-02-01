@@ -6,13 +6,14 @@ source_files = [
 "Main.cpp",
 "ServerSocket.cpp",
 "Server.cpp",
-"Socket.cpp"]
+"Socket.cpp",
+"JsonControl.cpp"]
 
 # Set our required libraries
 libraries = ['pthread']
 library_paths = ''
 
-env = Environment()
+env = Environment(CPPPATH ='/rapidjson/include/rapidjson/')
 
 # Set our g++ compiler flags
 env.Append( CPPFLAGS=[ '-Wall', '-g','-std=c++11', '-pthread'] )

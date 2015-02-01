@@ -1,7 +1,7 @@
 #ifndef NODE_HANDLER_H_
 #define NODE_HANDLER_H_
 
-class Server
+class NodeHandler
 {
 private:
 
