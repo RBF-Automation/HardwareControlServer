@@ -16,7 +16,7 @@ library_paths = ''
 env = Environment(CPPPATH ='/rapidjson/include/rapidjson/')
 
 # Set our g++ compiler flags
-env.Append( CPPFLAGS=[ '-Wall', '-g','-std=c++11', '-pthread'] )
+env.Append( CPPFLAGS=[ '-Wall', '-g','-std=c++0x', '-pthread'] )
 
 env.Append(LINKFLAGS = ['-std=c++11', '-pthread'])
 
