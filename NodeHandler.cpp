@@ -3,10 +3,14 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <stdio.h>
 #include "RF24/RPi/RF24/nRF24L01.h"
 #include "RF24/RPi/RF24/RF24.h"
 #include "RF24/RPi/RF24/RF24_config.h"
+#include <mutex>
+#include "SwitchDataPacket.h"
 
+std::mutex NodeAccessMutex;
 
 const uint64_t addresses[2] = { 0xE8E8F0F0E1LL, 0xE8E8F0F0E1LL };
 
@@ -40,8 +44,14 @@ void NodeHandler::InitRadio()
 
 }
 
-void NodeHandler::WriteData(int data)
+bool NodeHandler::WriteData(DataPacket *pack, int size)
 {
+  bool returnVal;
+
+  NodeAccessMutex.lock();
   radio.stopListening();
-  radio.write( &data, sizeof(data) );
+
+  returnVal = radio.write( pack, sizeof(pack));
+  NodeAccessMutex.unlock();
+  return returnVal;
 }

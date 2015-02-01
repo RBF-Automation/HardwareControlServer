@@ -8,7 +8,9 @@ source_files = [
 "Server.cpp",
 "Socket.cpp",
 "JsonControl.cpp",
-"NodeHandler.cpp"]
+"NodeHandler.cpp",
+"DataPacket.h",
+"SwitchDataPacket.h"]
 
 # Set our required libraries
 libraries = ['pthread', 'librf24-bcm']
@@ -19,7 +21,7 @@ env = Environment(CPPPATH =['/rapidjson/include/rapidjson/','/RF24/RPi/RF24/'])
 # Set our g++ compiler flags
 env.Append( CPPFLAGS=[ '-Wall', '-g','-std=c++0x', '-pthread'] )
 
-env.Append(LINKFLAGS = ['-std=c++11', '-pthread'])
+env.Append(LINKFLAGS = ['-std=c++0x', '-pthread'])
 
 # Tell SCons the program to build
 env.Program('run', source_files, LIBS = libraries, LIBPATH = library_paths)

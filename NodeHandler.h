@@ -1,6 +1,8 @@
 #ifndef NODE_HANDLER_H_
 #define NODE_HANDLER_H_
 
+#include "DataPacket.h"
+
 class NodeHandler
 {
 private:
@@ -8,7 +10,7 @@ private:
 public:
   NodeHandler();
   void InitRadio();
-  void WriteData(int data);
+  bool WriteData(DataPacket*, int size);
   ~NodeHandler();
 
 

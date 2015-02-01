@@ -2,6 +2,11 @@
 #include "ServerSocket.h"
 #include "SocketException.h"
 #include "JsonControl.h"
+#include "NodeHandler.h"
+#include "Actions.h"
+#include "rapidjson/include/rapidjson/document.h"
+#include "rapidjson/include/rapidjson/writer.h"
+#include "rapidjson/include/rapidjson/stringbuffer.h"
 #include <stdint.h>
 #include <cstdio>
 #include <iostream>
@@ -9,14 +14,8 @@
 #include <thread>
 #include <mutex>
 
-std::mutex NodeAccessMutex;
+NodeHandler node;
 
-
-struct thread_data
-{
-  int  thread_id;
-  char *message;
-};
 
 Server::Server()
 {
@@ -26,21 +25,41 @@ Server::Server()
 
 void dataHandlerThread(std::string data)
 {
+  SwitchDataPacket packet;
   const char * c = data.c_str();
-  JsonControl jsn;
-  jsn.DecodeJsonObject(c);
+  //JsonControl jsn;
+  //jsn.DecodeJsonObject(c);
+
+  rapidjson::Document doc;
+  doc.Parse(c);
+  //std::cout << doc["action"].GetInt() << std::endl;
+
+  switch ( doc["action"].GetUint() )
+  {
+    case Actions::SWITCH:
+      packet.state = doc["state"].GetUint();
+      while(node.WriteData(&packet,sizeof(packet)) != true)
+      {
+
+      }
+
+    break;
+    default:
+    // Code
+    break;
+  }
   //std::cout << data << std::endl;
 
-  NodeAccessMutex.lock();
-  //execute node code here
-  NodeAccessMutex.unlock();
 
 }
 
 void newServerThread()
 {
+
   std::cout << "running....\n";
   system("fuser 30000/tcp -k");
+
+  node.InitRadio();
 
   for(;;)
   {
@@ -63,7 +82,7 @@ void newServerThread()
             std::string send = "{\"sent\":true}";
 
             new_sock >> data;
-            new_sock << send;
+            //new_sock << send;
             std::thread t2(dataHandlerThread, data);
 
             t2.detach();
