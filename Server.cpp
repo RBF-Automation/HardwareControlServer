@@ -32,8 +32,9 @@ void dataHandlerThread(std::string data)
 
   rapidjson::Document doc;
   doc.Parse(c);
-  //std::cout << doc["action"].GetInt() << std::endl;
-
+  uint64_t x = doc["nodeid"].GetUint64();
+  std::cout << x << std::endl;
+  node.SetWritingPipe(x);
   switch ( doc["action"].GetUint() )
   {
     case Actions::SWITCH:
