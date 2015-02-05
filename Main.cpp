@@ -6,10 +6,5 @@
 int main ( int argc, char* argv[])
 {
   Server serv;
-  for(;;)
-  {
-    
-  }
-
   return 0;
 }

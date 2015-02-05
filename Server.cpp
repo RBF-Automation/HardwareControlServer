@@ -105,7 +105,7 @@ void Server::RunServer()
 {
   std::thread t1(newServerThread);
 
-  t1.detach();
+  t1.join();
 }
 
 Server::~Server()
