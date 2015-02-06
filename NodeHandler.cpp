@@ -41,6 +41,9 @@ void NodeHandler::InitRadio()
 
   radio.setDataRate(RF24_1MBPS); //parameters: RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setPALevel(RF24_PA_MAX); //sets Ppwer Amp: RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
+  radio.setRetries(5,15);
+  radio.setAutoAck(true);
+  radio.setCRCLength(RF24_CRC_16);
   radio.openWritingPipe(writingPipe);
   radio.openReadingPipe(1,addresses[2]);
   radio.startListening();
