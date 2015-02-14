@@ -5,18 +5,21 @@
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
+#include "NodeHandler.h"
 
 using boost::asio::ip::tcp;
 
-class Session {
+class Session
+{
 
     private:
         tcp::socket mSocket; //socket_
         enum { max_length = 1024 };
         char mData[max_length]; //data_
+        NodeHandler node_m;
 
     public:
-        Session(boost::asio::io_service& io_service);
+        Session(boost::asio::io_service& io_service, NodeHandler node);
 
         tcp::socket& socket();
 

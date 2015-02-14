@@ -16,6 +16,7 @@
 
 NodeHandler node;
 
+std::mutex NodeAccessMutex;
 
 Server::Server()
 {
@@ -38,11 +39,12 @@ void dataHandlerThread(std::string data)
   switch ( doc["action"].GetUint() )
   {
     case Actions::SWITCH:
-      packet.state = doc["state"].GetUint();
-      while(node.WriteData(&packet,sizeof(packet)) != true)
-      {
 
-      }
+    packet.state = doc["state"].GetUint();
+
+    NodeAccessMutex.lock();
+    node.WriteData(&packet,sizeof(packet)) != true;
+    NodeAccessMutex.unlock();
 
     break;
     default:

@@ -6,10 +6,12 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include "Session.h"
+#include "NodeHandler.h"
 
 using boost::asio::ip::tcp;
 
-class Server {
+class Server
+{
     private:
         boost::asio::io_service& mIoService;
         tcp::acceptor mAcceptor;

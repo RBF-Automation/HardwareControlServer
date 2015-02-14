@@ -1,0 +1,26 @@
+# Tell SCons to create our build files in the 'build' directory
+VariantDir('build', 'src', duplicate=0)
+
+
+source_files = [
+"main.cpp",
+"Server.cpp",
+"Session.cpp",
+"JsonControl.cpp",
+"NodeHandler.cpp",
+"DataPacket.h",
+"SwitchDataPacket.h"]
+
+# Set our required libraries
+libraries = ['pthread', 'librf24-bcm']
+library_paths = '/RF24/RPi/RF24/'
+
+env = Environment(CPPPATH =['/rapidjson/include/rapidjson/','/RF24/RPi/RF24/'])
+
+# Set our g++ compiler flags
+env.Append( CPPFLAGS=[ '-Wall', '-g','-std=c++0x', '-pthread', '-lboost_system'] )
+
+env.Append(LINKFLAGS = ['-std=c++0x', '-pthread',  '-lboost_system'])
+
+# Tell SCons the program to build
+env.Program('run', source_files, LIBS = libraries, LIBPATH = library_paths)

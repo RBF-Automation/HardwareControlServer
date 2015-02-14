@@ -1,21 +1,30 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #include "Server.h"
+#include "NodeHandler.h"
 
+NodeHandler node;
 
-Server::Server(boost::asio::io_service& io_service, short port) : mIoService(io_service), mAcceptor(io_service, tcp::endpoint(tcp::v4(), port)) {
+Server::Server(boost::asio::io_service& io_service, short port) : mIoService(io_service), mAcceptor(io_service, tcp::endpoint(tcp::v4(), port))
+{
+    node.InitRadio();
     startAccept();
 }
 
-void Server::startAccept() {
-    Session* newSession = new Session(mIoService);
+void Server::startAccept()
+{
+    Session* newSession = new Session(mIoService, node);
     mAcceptor.async_accept(newSession->socket(), boost::bind(&Server::handleAccept, this, newSession, boost::asio::placeholders::error));
 }
 
-void Server::handleAccept(Session* newSession, const boost::system::error_code& error) {
-    if (!error) {
+void Server::handleAccept(Session* newSession, const boost::system::error_code& error)
+{
+    if (!error)
+    {
         newSession->start();
-    } else {
+    }
+    else
+    {
         delete newSession;
     }
 
