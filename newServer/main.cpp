@@ -9,13 +9,14 @@ int main(int argc, char* argv[])
             std::cerr << "Usage: server <port>\n";
             return 1;
         }
-
+        std::cout << "running....\n";
+        system("fuser 30000/tcp -k");
         boost::asio::io_service ioService;
         Server s(ioService, std::atoi(argv[1]));
         ioService.run();
 
     }
-    catch (std::exception& e) 
+    catch (std::exception& e)
     {
         std::cerr << "Exception: " << e.what() << "\n";
     }
