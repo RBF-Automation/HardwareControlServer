@@ -1,5 +1,8 @@
 #include "Server.h"
 
+std::string sysOut;
+char sysOutBuff[100];
+
 int main(int argc, char* argv[])
 {
     try
@@ -9,8 +12,10 @@ int main(int argc, char* argv[])
             std::cerr << "Usage: server <port>\n";
             return 1;
         }
+        sysOut = std::string("fuser ") + argv[1] + "/tcp -k";
+        strcpy(sysOutBuff, sysOut.c_str());
         std::cout << "running....\n";
-        system("fuser 30000/tcp -k");
+        system(sysOutBuff);
         boost::asio::io_service ioService;
         Server s(ioService, std::atoi(argv[1]));
         ioService.run();

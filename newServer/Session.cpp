@@ -3,9 +3,14 @@
 #include "Session.h"
 #include "JsonControl.h"
 #include "Actions.h"
+
 #include "rapidjson/include/rapidjson/document.h"
+#include "rapidjson/include/rapidjson/prettywriter.h"	// for stringify JSON
+#include "rapidjson/include/rapidjson/filestream.h"	// wrapper of C stream for prettywriter as output
 #include "rapidjson/include/rapidjson/writer.h"
 #include "rapidjson/include/rapidjson/stringbuffer.h"
+//#inlcude "rapidjson/include/rapidjson/allocators.h"
+//#include "rapidjson/include/rapidjson/encodings.h"
 #include <stdint.h>
 #include <cstdio>
 #include <iostream>
@@ -42,19 +47,43 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
 
         rapidjson::Document doc;
         doc.Parse(mData);
-
-        uint64_t x = doc["nodeid"].GetUint64();
-        std::cout << x << std::endl;
-        node_m.SetWritingPipe(x);
-
-        switch ( doc["action"].GetUint() )
+        uint64_t nodeID;
+        uint32_t action;
+        //Value::Member* m ;
+        //assert( doc.FindMember("nodeid"));
+        bool nodeID_Test = doc.HasMember("nodeid");
+        bool action_Test = doc.HasMember("action");
+        
+        
+        if(nodeID_Test != 0 )
+        {
+			nodeID = doc["nodeid"].GetUint64();
+		}
+		else
+		{
+			nodeID = 0;
+		}
+        std::cout << nodeID << std::endl;
+        //node_m.SetWritingPipe(nodeID);
+		
+		if(action_Test != 0)
+		{
+			action = doc["action"].GetUint();
+		}
+		else
+		{
+			action = 0;
+		}
+		
+		
+        switch ( action )
         {
           case Actions::SWITCH:
 
           packet.state = doc["state"].GetUint();
 
           NodeAccessMutex.lock();
-          node_m.WriteData(&packet,sizeof(packet)) != true;
+          //node_m.WriteData(&packet,sizeof(packet)) != true;
           NodeAccessMutex.unlock();
 
           break;
