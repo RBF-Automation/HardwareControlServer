@@ -41,16 +41,15 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
       if(mSocket.remote_endpoint().address().to_string() == "127.0.0.1") // only listen to local host
       {
         SwitchDataPacket packet;
-        //const char * c = mData.c_str();
-        //JsonControl jsn;
-        //jsn.DecodeJsonObject(c);
+        const char * c = mData.c_str();
+        JsonControl jsn;
+        jsn.DecodeJsonObject(c);
 
         rapidjson::Document doc;
         doc.Parse(mData);
         uint64_t nodeID;
         uint32_t action;
-        //Value::Member* m ;
-        //assert( doc.FindMember("nodeid"));
+
         bool nodeID_Test = doc.HasMember("nodeid");
         bool action_Test = doc.HasMember("action");
         
@@ -64,7 +63,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
 			nodeID = 0;
 		}
         std::cout << nodeID << std::endl;
-        //node_m.SetWritingPipe(nodeID);
+        node_m.SetWritingPipe(nodeID);
 		
 		if(action_Test != 0)
 		{
@@ -83,7 +82,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
           packet.state = doc["state"].GetUint();
 
           NodeAccessMutex.lock();
-          //node_m.WriteData(&packet,sizeof(packet)) != true;
+          node_m.WriteData(&packet,sizeof(packet)) != true;
           NodeAccessMutex.unlock();
 
           break;
