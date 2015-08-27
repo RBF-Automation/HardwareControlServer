@@ -41,9 +41,9 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
       if(mSocket.remote_endpoint().address().to_string() == "127.0.0.1") // only listen to local host
       {
         SwitchDataPacket packet;
-        const char * c = mData.c_str();
-        JsonControl jsn;
-        jsn.DecodeJsonObject(c);
+        //const char * c = mData.c_str();
+        //JsonControl jsn;
+        //jsn.DecodeJsonObject(c);
 
         rapidjson::Document doc;
         doc.Parse(mData);
@@ -62,7 +62,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
 		{
 			nodeID = 0;
 		}
-        std::cout << nodeID << std::endl;
+        //std::cout << nodeID << std::endl;
         node_m.SetWritingPipe(nodeID);
 		
 		if(action_Test != 0)
