@@ -93,7 +93,16 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
           case Actions::MULTI_SWITCH:
 
             multiSwitchData.state = doc["state"].GetUint();
-            multiSwitchData.outletNum = doc["switchNum"].GetUint();
+
+            if(doc.HasMember("switchNum") != 0)
+            {
+              multiSwitchData.outletNum = doc["switchNum"].GetUint();
+              std::cout << "switchNum Exists" << std::endl;
+            }
+            else
+            {
+              ultiSwitchData.outletNum = 0;
+            }
 
             NodeAccessMutex.lock();
             node_m.WriteData(&multiSwitchData,sizeof(multiSwitchData)) != true;
