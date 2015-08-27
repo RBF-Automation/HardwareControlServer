@@ -101,7 +101,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
             }
             else
             {
-              ultiSwitchData.outletNum = 0;
+              multiSwitchData.outletNum = 0;
             }
 
             NodeAccessMutex.lock();
