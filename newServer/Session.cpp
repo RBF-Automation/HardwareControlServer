@@ -43,7 +43,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
       if(mSocket.remote_endpoint().address().to_string() == "127.0.0.1") // only listen to local host
       {
         SwitchDataPacket packet;
-        OutletDataPacket outletPacket;
+        MultiSwitchDataPacket multiSwitchData;
         //const char * c = mData.c_str();
         //JsonControl jsn;
         //jsn.DecodeJsonObject(c);
@@ -92,8 +92,8 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
 
           case Actions::MULTI_SWITCH:
             NodeAccessMutex.lock();
-            outletPacket.state = doc["state"].GetUint();
-            outletPacket.outletNum = doc["switchNum"].GetUint();
+            multiSwitchData.state = doc["state"].GetUint();
+            multiSwitchData.outletNum = doc["switchNum"].GetUint();
             NodeAccessMutex.unlock();
 
 
