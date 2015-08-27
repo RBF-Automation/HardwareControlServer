@@ -9,7 +9,7 @@ source_files = [
 "JsonControl.cpp",
 "NodeHandler.cpp",
 "DataPacket.h",
-"SwitchDataPacket.h"
+"SwitchDataPacket.h",
 "MultiSwitchDataPacket.h"]
 
 # Set our required libraries
