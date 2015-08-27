@@ -91,9 +91,12 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
           break;
 
           case Actions::MULTI_SWITCH:
-            NodeAccessMutex.lock();
+
             multiSwitchData.state = doc["state"].GetUint();
             multiSwitchData.outletNum = doc["switchNum"].GetUint();
+            
+            NodeAccessMutex.lock();
+            node_m.WriteData(&multiSwitchData,sizeof(multiSwitchData)) != true;
             NodeAccessMutex.unlock();
 
 
