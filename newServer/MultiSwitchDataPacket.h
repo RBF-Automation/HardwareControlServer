@@ -8,7 +8,7 @@
 class MultiSwitchDataPacket: public DataPacket
 {
 public:
-  uint32_t outletNum;
+  uint32_t switchNumber;
   uint32_t state;
 };
 
