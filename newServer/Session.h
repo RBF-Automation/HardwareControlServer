@@ -14,7 +14,7 @@ class Session
 
     private:
         tcp::socket mSocket; //socket_
-        enum { max_length = 1024 };
+        enum { max_length = 1048 };
         char mData[max_length]; //data_
         NodeHandler node_m;
 

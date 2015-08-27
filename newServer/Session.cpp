@@ -47,7 +47,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
         //const char * c = mData.c_str();
         //JsonControl jsn;
         //jsn.DecodeJsonObject(c);
-        std::cout << mData << std::endl;
+        //std::cout << mData << std::endl;
         rapidjson::Document doc;
         doc.Parse(mData);
         uint64_t nodeID;
@@ -104,7 +104,6 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
             if(doc.HasMember("switchNum") != 0)
             {
               multiSwitchData.outletNum = doc["switchNum"].GetUint();
-              std::cout << multiSwitchData.outletNum << std::endl;
             }
             else
             {
@@ -114,8 +113,6 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
             NodeAccessMutex.lock();
             node_m.WriteData(&multiSwitchData,sizeof(multiSwitchData)) != true;
             NodeAccessMutex.unlock();
-
-            std::cout << "After Write" << std::endl;
 
           break;
 
