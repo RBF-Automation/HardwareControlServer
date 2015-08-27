@@ -92,7 +92,14 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
 
           case Actions::MULTI_SWITCH:
 
-            multiSwitchData.state = doc["state"].GetUint();
+            if(doc.HasMember("state") != 0)
+            {
+              multiSwitchData.state = doc["state"].GetUint();
+            }
+            else
+            {
+              multiSwitchData.state = 0;
+            }
 
             if(doc.HasMember("switchNum") != 0)
             {
