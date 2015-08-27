@@ -97,7 +97,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
             if(doc.HasMember("switchNum") != 0)
             {
               multiSwitchData.outletNum = doc["switchNum"].GetUint();
-              std::cout << "switchNum Exists" << std::endl;
+              std::cout << multiSwitchData.outletNum << std::endl;
             }
             else
             {
@@ -107,6 +107,8 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
             NodeAccessMutex.lock();
             node_m.WriteData(&multiSwitchData,sizeof(multiSwitchData)) != true;
             NodeAccessMutex.unlock();
+
+            std::cout << "After Write" << std::endl;
 
           break;
 

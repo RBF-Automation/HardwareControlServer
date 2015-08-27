@@ -8,8 +8,8 @@
 class MultiSwitchDataPacket: public DataPacket
 {
 public:
-  uint32_t state;
   uint32_t outletNum;
+  uint32_t state;
 };
 
 
