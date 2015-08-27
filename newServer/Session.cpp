@@ -2,11 +2,13 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 #include "Session.h"
 #include "JsonControl.h"
+#include "SwitchDataPacket.h"
+#include "MultiSwitchDataPacket.h"
 #include "Actions.h"
 
 #include "rapidjson/include/rapidjson/document.h"
-#include "rapidjson/include/rapidjson/prettywriter.h"	// for stringify JSON
-#include "rapidjson/include/rapidjson/filestream.h"	// wrapper of C stream for prettywriter as output
+#include "rapidjson/include/rapidjson/prettywriter.h"  // for stringify JSON
+#include "rapidjson/include/rapidjson/filestream.h"  // wrapper of C stream for prettywriter as output
 #include "rapidjson/include/rapidjson/writer.h"
 #include "rapidjson/include/rapidjson/stringbuffer.h"
 //#inlcude "rapidjson/include/rapidjson/allocators.h"
@@ -41,6 +43,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
       if(mSocket.remote_endpoint().address().to_string() == "127.0.0.1") // only listen to local host
       {
         SwitchDataPacket packet;
+        OutletDataPacket outletPacket;
         //const char * c = mData.c_str();
         //JsonControl jsn;
         //jsn.DecodeJsonObject(c);
@@ -52,40 +55,51 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
 
         bool nodeID_Test = doc.HasMember("nodeid");
         bool action_Test = doc.HasMember("action");
-        
-        
-        if(nodeID_Test != 0 )
-        {
-			nodeID = doc["nodeid"].GetUint64();
-		}
-		else
-		{
-			nodeID = 0;
-		}
+
+
+    if(nodeID_Test != 0 )
+    {
+      nodeID = doc["nodeid"].GetUint64();
+    }
+    else
+    {
+      nodeID = 0;
+    }
         //std::cout << nodeID << std::endl;
         node_m.SetWritingPipe(nodeID);
-		
-		if(action_Test != 0)
-		{
-			action = doc["action"].GetUint();
-		}
-		else
-		{
-			action = 0;
-		}
-		
-		
+
+    if(action_Test != 0)
+    {
+      action = doc["action"].GetUint();
+    }
+    else
+    {
+      action = 0;
+    }
+
+
         switch ( action )
         {
           case Actions::SWITCH:
 
-          packet.state = doc["state"].GetUint();
+            packet.state = doc["state"].GetUint();
 
-          NodeAccessMutex.lock();
-          node_m.WriteData(&packet,sizeof(packet)) != true;
-          NodeAccessMutex.unlock();
+            NodeAccessMutex.lock();
+            node_m.WriteData(&packet,sizeof(packet)) != true;
+            NodeAccessMutex.unlock();
 
           break;
+
+          case Actions::MULTI_SWITCH:
+            NodeAccessMutex.lock();
+            outletPacket.state = doc["state"].GetUint();
+            outletPacket.outletNum = doc["switchNum"].GetUint();
+            NodeAccessMutex.unlock();
+
+
+
+          break;
+
           default:
           // Code
           break;
