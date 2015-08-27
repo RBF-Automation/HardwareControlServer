@@ -47,7 +47,7 @@ void Session::handleRead(const boost::system::error_code& error, size_t bytes_tr
         //const char * c = mData.c_str();
         //JsonControl jsn;
         //jsn.DecodeJsonObject(c);
-
+        std::cout << mData << std::endl;
         rapidjson::Document doc;
         doc.Parse(mData);
         uint64_t nodeID;
